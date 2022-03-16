@@ -54,7 +54,7 @@ namespace Game.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Accound,Password,Role,LastLogin")] LoveGame loveGame)
+        public async Task<IActionResult> Create([Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Account,Password,Role,LastLogin")] LoveGame loveGame)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +64,39 @@ namespace Game.Controllers
             }
             return View(loveGame);
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
 
+        // POST: LoveGames/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("Account,Password")] LoveGame loveGame)
+        {
+            var user = _context.LoveGames.FirstOrDefault(x => x.Account == loveGame.Account);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            if (user.LastLogin > DateTime.Now.AddHours(-2.0))
+            {
+                if (user.Role == "admin") // admin = 管理員
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Welcome"); // 個人頁面
+            }
+
+            if (user.Password != loveGame.Password)
+                return RedirectToAction("Login");
+
+            user.LastLogin = DateTime.Now;
+            _context.LoveGames.Update(user);
+            _context.SaveChanges();
+
+            return View(loveGame);
+        }
         // GET: LoveGames/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -86,7 +118,7 @@ namespace Game.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Accound,Password,Role,LastLogin")] LoveGame loveGame)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Account,Password,Role,LastLogin")] LoveGame loveGame)
         {
             if (id != loveGame.Id)
             {

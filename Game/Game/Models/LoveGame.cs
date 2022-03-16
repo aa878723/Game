@@ -14,7 +14,7 @@ namespace Game.Models
         public string? Career { get; set; }
         public string Hobby { get; set; } = null!;
         public string City { get; set; } = null!;
-        public string Accound { get; set; } = null!;
+        public string Account { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Role { get; set; } = null!;
         public DateTime LastLogin { get; set; }

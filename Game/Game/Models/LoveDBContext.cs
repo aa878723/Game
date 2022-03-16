@@ -17,6 +17,8 @@ namespace Game.Models
         }
 
         public virtual DbSet<LoveGame> LoveGames { get; set; } = null!;
+        public virtual DbSet<Talking> Talkings { get; set; } = null!;
+        public virtual DbSet<TalkingRoom> TalkingRooms { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,17 +35,16 @@ namespace Game.Models
             {
                 entity.ToTable("LoveGame");
 
-                entity.HasIndex(e => e.Accound, "IX_LoveGame")
+                entity.HasIndex(e => e.Account, "IX_LoveGame")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Id, "IX_LoveGame_1");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Accound)
+                entity.Property(e => e.Account)
                     .HasMaxLength(12)
-                    .IsUnicode(false)
-                    .HasColumnName("accound");
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Birthday).HasColumnType("date");
 
@@ -70,6 +71,30 @@ namespace Game.Models
                     .HasColumnName("role");
 
                 entity.Property(e => e.SexualOrientation).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Talking>(entity =>
+            {
+                entity.ToTable("Talking");
+
+                entity.Property(e => e.Account)
+                    .HasMaxLength(12)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Message).HasMaxLength(50);
+
+                entity.Property(e => e.MessageTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Room).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<TalkingRoom>(entity =>
+            {
+                entity.ToTable("TalkingRoom");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.RoomName).HasMaxLength(10);
             });
 
             OnModelCreatingPartial(modelBuilder);
