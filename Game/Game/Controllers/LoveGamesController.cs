@@ -54,7 +54,7 @@ namespace Game.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City")] LoveGame loveGame)
+        public async Task<IActionResult> Create([Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Accound,Password,Role,LastLogin")] LoveGame loveGame)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Game.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City")] LoveGame loveGame)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Accound,Password,Role,LastLogin")] LoveGame loveGame)
         {
             if (id != loveGame.Id)
             {
