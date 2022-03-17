@@ -28,5 +28,11 @@ namespace Game.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Warning(CommonWarningViewModel model)
+        {
+            return View(model);
+        }
     }
 }

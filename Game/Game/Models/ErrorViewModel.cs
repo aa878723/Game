@@ -6,4 +6,11 @@ namespace Game.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
+
+    public class CommonWarningViewModel
+    {
+        public string Summary { get; set; } = null!;
+
+        public string Message { get; set; } = null!;
+    }
 }

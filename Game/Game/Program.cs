@@ -4,6 +4,15 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromHours(2);
+    option.Cookie.Name = "MvcTutoralSession";
+    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true; 
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<LoveDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
@@ -23,6 +32,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 

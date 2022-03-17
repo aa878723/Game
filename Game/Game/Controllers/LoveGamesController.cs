@@ -66,6 +66,15 @@ namespace Game.Controllers
         }
         public IActionResult Login()
         {
+            string accountCache = HttpContext.Session.GetString("LoveGameAccount");
+            var user = _context.LoveGames.FirstOrDefault(x => x.Account == accountCache);
+            if (user != null && user.LastLogin > DateTime.Now.AddHours(-2.0))
+            {
+                if (user.Role == "admin") // admin = 管理員
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Profile"); // 個人頁面
+            }
             return View();
         }
 
@@ -74,26 +83,27 @@ namespace Game.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind("Account,Password")] LoveGame loveGame)
+        public IActionResult Login([Bind("Account,Password")] LoveGame loveGame)
         {
             var user = _context.LoveGames.FirstOrDefault(x => x.Account == loveGame.Account);
             if (user == null)
-                return RedirectToAction("Login");
-
-            if (user.LastLogin > DateTime.Now.AddHours(-2.0))
-            {
-                if (user.Role == "admin") // admin = 管理員
-                    return RedirectToAction("Index");
-                else
-                    return RedirectToAction("Welcome"); // 個人頁面
-            }
+                return RedirectToAction("Warning", "Home", new CommonWarningViewModel
+                {
+                    Summary = "登入失敗",
+                    Message = "帳號或密碼錯誤"
+                });
 
             if (user.Password != loveGame.Password)
-                return RedirectToAction("Login");
+                return RedirectToAction("Warning", "Home", new CommonWarningViewModel
+                {
+                    Summary = "登入失敗",
+                    Message = "帳號或密碼錯誤"
+                });
 
             user.LastLogin = DateTime.Now;
             _context.LoveGames.Update(user);
             _context.SaveChanges();
+            HttpContext.Session.SetString("LoveGameAccount", loveGame.Account);
 
             return View(loveGame);
         }
