@@ -105,7 +105,7 @@ namespace Game.Controllers
             _context.SaveChanges();
             HttpContext.Session.SetString("LoveGameAccount", loveGame.Account);
 
-            return View(loveGame);
+            return RedirectToAction("TalkRoom", "Talk");
         }
         // GET: LoveGames/Edit/5
         public async Task<IActionResult> Edit(int? id)

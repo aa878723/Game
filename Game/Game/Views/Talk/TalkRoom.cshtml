@@ -1,0 +1,25 @@
+﻿@model List<TalkingRoom>
+
+@{
+    ViewData["Title"] = "聊天室";
+}
+
+<h1>Love Game 聊天室</h1>
+<br />
+
+<h3>聊天室列表</h3>
+<table class="table table-strip">
+    @for (var i = 0; i < @Model.Count / 4; i++)
+    {
+        <tr>
+            @for (var j = 0; j < 4; j++)
+            {
+                if (i + j >= Model.Count)
+                    break;
+                <td>
+                    <a href="/Talk/Talk/@Model[i + j].Id">@Model[i + j].RoomName</a>
+                </td>
+            }
+        </tr>
+    }
+</table>
