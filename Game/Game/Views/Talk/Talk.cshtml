@@ -48,10 +48,16 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() { 
-            // location.reload()
-            document.getElementById("inputContainer").scrollIntoView();
-        })
+        const badWords = ["line", "賴", "私聊"]
+        const msg = $("#message").val()
+
+        if (message){
+            for (let i = 0; i < badWords.length; i++) {
+                if ()
+            }
+        } else {
+            alert("必須輸入訊息")
+        }
     </script>
 }
 @*@section Scripts {

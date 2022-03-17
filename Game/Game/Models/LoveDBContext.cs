@@ -17,6 +17,7 @@ namespace Game.Models
         }
 
         public virtual DbSet<LoveGame> LoveGames { get; set; } = null!;
+        public virtual DbSet<Pair> Pairs { get; set; } = null!;
         public virtual DbSet<Talking> Talkings { get; set; } = null!;
         public virtual DbSet<TalkingRoom> TalkingRooms { get; set; } = null!;
 
@@ -71,6 +72,22 @@ namespace Game.Models
                     .HasColumnName("role");
 
                 entity.Property(e => e.SexualOrientation).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Pair>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Account)
+                    .HasMaxLength(12)
+                    .IsFixedLength();
+
+                entity.Property(e => e.Lover)
+                    .HasMaxLength(12)
+                    .HasColumnName("lover")
+                    .IsFixedLength();
+
+                entity.Property(e => e.Want).HasColumnName("want");
             });
 
             modelBuilder.Entity<Talking>(entity =>

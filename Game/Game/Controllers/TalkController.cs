@@ -20,7 +20,7 @@ namespace Game.Controllers
         [HttpGet]
         public IActionResult Talk(int id)
         {
-            string? account = HttpContext.Session.GetString("LoveGameAccount");
+            string? account = HttpContext.Session.GetString("LoveGameAccount");//檢查使用者登入
             if (string.IsNullOrEmpty(account))
                 return RedirectToAction("Login", "LoveGames");
 
