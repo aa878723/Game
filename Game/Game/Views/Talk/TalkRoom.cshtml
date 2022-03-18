@@ -9,15 +9,15 @@
 
 <h3>聊天室列表</h3>
 <table class="table table-strip">
-    @for (var i = 0; i < @Model.Count / 4; i++)
+    @for (var i = 0; i <= @Model.Count / 4; i++)
     {
         <tr>
             @for (var j = 0; j < 4; j++)
             {
-                if (i + j >= Model.Count)
+                if (i * 4 + j >= Model.Count)
                     break;
                 <td>
-                    <a href="/Talk/Talk/@Model[i + j].Id">@Model[i + j].RoomName</a>
+                    <a href="/Talk/Talk/@Model[i * 4 + j].Id">@Model[i * 4 + j].RoomName</a>
                 </td>
             }
         </tr>
