@@ -50,11 +50,19 @@
     <script>
         const account = $("#userAccount").val();
         const room = $("#roomName").val();
+        const badWords = ["line", "賴", "私聊"];
+
         function sendMessage() {
             const msg = $("#message").val();
             if (!msg) {
                 alert('請輸入內容')
                 return;
+            }
+
+            if (containsBadWord(msg)) {
+                sendAnyway = confirm("你的訊息包含敏感字眼，是否仍要送出？");
+                if (!sendAnyway)
+                    return;
             }
 
             $.ajax({
@@ -75,6 +83,14 @@
             }).then(function () {
                 
             });
+        }
+
+        function containsBadWord(msg) {
+            for (let i = 0; i < badWords.length; i++) {
+                if (msg.toLowerCase().includes(badWords[i]))
+                    return true;
+            }
+            return false;
         }
     </script>
 }
