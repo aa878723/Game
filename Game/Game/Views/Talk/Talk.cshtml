@@ -30,49 +30,35 @@
 <div class="fixed-bottom m-2" id="inputContainer">
     <div class="row justify-content-center">
         <div class="col-sm-8">
-            <form asp-action="Talk">
+            @*<form asp-action="Talk">*@
                 <div class="row">
                     <div class="col-sm-10">
-                        <input name="userAccount" type="hidden" value="@Model.UserAccount" readonly/>
-                        <input name="roomName" type="hidden" value="@Model.RoomName" readonly/>
-                        <input name="message" type="text" class="form-control" id="message"/>
+                        <input id="userAccount" type="hidden" value="@Model.UserAccount" readonly />
+                        <input id="roomName" type="hidden" value="@Model.RoomName" readonly />
+                        <input id="message" type="text" class="form-control" />
                     </div>
                     <div class="col-sm-2">
-                        <input type="submit" class="btn btn-primary" value="發送" />
+                        <button class="btn btn-primary" onclick="sendMessage()">發送</button>
                     </div>
                 </div>
-            </form>
+            @*</form>*@
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        const badWords = ["line", "賴", "私聊"]
-        const msg = $("#message").val()
-
-        if (message){
-            for (let i = 0; i < badWords.length; i++) {
-                if ()
-            }
-        } else {
-            alert("必須輸入訊息")
-        }
-    </script>
-}
-@*@section Scripts {
-    <script>
         const account = $("#userAccount").val();
         const room = $("#roomName").val();
         function sendMessage() {
-            const  msg = $("#newMessage").val();
-            if (!account || !room || !msg) {
+            const msg = $("#message").val();
+            if (!msg) {
                 alert('請輸入內容')
-                retrun;
+                return;
             }
 
             $.ajax({
-                url: '/Talk/SendMessage',
+                url: window.location.pathname,
                 method: 'POST', // jQueyr 1.9 版以前只能用 type: 'GET'，1.9以後兩個都可以
                 data: {
                     roomName: room,
@@ -87,15 +73,8 @@
                     alert(JSON.stringify(err))
                 }
             }).then(function () {
-                $("#select-1").on('change', function () {
-                    // 禮拜四上課的時候 val 後面忘記加小括號
-                    // 所以 alert 出來的是一個 function 定義但沒有執行 function
-                    // 加上 小括號之後就能取出值了
-                    // $(this) 代表叫 jQuery 幫我們取 "觸發這個 event" 的元素
-                    // 也就是被選中的 option
-                    alert($(this).val()); 
-                });
+                
             });
         }
     </script>
-}*@
+}
