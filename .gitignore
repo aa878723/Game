@@ -1,3 +1,5 @@
 bin
 obj
 .vs
+/Game/Game/wwwroot/images
+/Game/Game/Game.csproj.user

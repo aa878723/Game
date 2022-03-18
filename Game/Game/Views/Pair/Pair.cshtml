@@ -1,0 +1,48 @@
+﻿@model LoveGame
+
+<h1>配對</h1>
+<br />
+
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="@Href($"~/images/{@Model.Account}.jpg")" alt="profile image">
+      <div class="card-body">
+        <h4 class="card-title">@Model.Account</h4>
+        <p class="card-text">@Model.Age 歲</p>
+        <p class="card-text">@Model.City</p>
+        <p class="card-text">@Model.Hobby</p>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-pink" onclick="submitLover(true)">喜歡</button>
+            <button class="btn btn-light" onclick="submitLover(false)">不喜歡</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<form>
+    <input id="lover" name="lover" type="hidden" value="@Model.Account" readonly />
+</form>
+
+@section Scripts {
+    <script>
+        function submitLover(want) {
+            const lover = $("#lover").val();
+            $.ajax({
+                url: window.location.pathname,
+                method: 'POST', // jQueyr 1.9 版以前只能用 type: 'GET'，1.9以後兩個都可以
+                data: {
+                    lover: lover,
+                    want: want
+                },
+                success: function (resp) {
+                    location.reload()
+                },
+                error: function(err) {
+                    alert(JSON.stringify(err))
+                }
+            }).then(function () {
+                
+            });
+        }
+    </script>
+}

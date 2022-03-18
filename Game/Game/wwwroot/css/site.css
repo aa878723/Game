@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.btn-pink {
+    color: #fff;
+    background-color: #ff00ff;
+    border-color: #ff00ff;
+}
