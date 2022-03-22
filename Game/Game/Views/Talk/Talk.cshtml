@@ -27,7 +27,7 @@
         }
     }
 </div>
-<div class="fixed-bottom m-2" id="inputContainer">
+<div class="fixed-bottom m-2">
     <div class="row justify-content-center">
         <div class="col-sm-8">
             @*<form asp-action="Talk">*@
@@ -46,11 +46,14 @@
     </div>
 </div>
 
+<div id="inputContainer">_</div>
+
 @section Scripts {
     <script>
         const account = $("#userAccount").val();
         const room = $("#roomName").val();
         const badWords = ["line", "賴", "私聊"];
+        document.getElementById("inputContainer").scrollIntoView();
 
         function sendMessage() {
             const msg = $("#message").val();
