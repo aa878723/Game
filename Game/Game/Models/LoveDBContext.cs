@@ -16,7 +16,6 @@ namespace Game.Models
         {
         }
 
-        public virtual DbSet<Friend> Friends { get; set; } = null!;
         public virtual DbSet<LoveGame> LoveGames { get; set; } = null!;
         public virtual DbSet<Money> Money { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
@@ -24,6 +23,7 @@ namespace Game.Models
         public virtual DbSet<PersonalTalking> PersonalTalkings { get; set; } = null!;
         public virtual DbSet<Talking> Talkings { get; set; } = null!;
         public virtual DbSet<TalkingRoom> TalkingRooms { get; set; } = null!;
+        public virtual DbSet<TbFriend> TbFriends { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,22 +36,6 @@ namespace Game.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Friend>(entity =>
-            {
-                entity.ToTable("Friend");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Account)
-                    .HasMaxLength(12)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Friend1)
-                    .HasMaxLength(12)
-                    .IsUnicode(false)
-                    .HasColumnName("Friend");
-            });
-
             modelBuilder.Entity<LoveGame>(entity =>
             {
                 entity.ToTable("LoveGame");
@@ -189,6 +173,21 @@ namespace Game.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.RoomName).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<TbFriend>(entity =>
+            {
+                entity.ToTable("TB_Friend");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Account)
+                    .HasMaxLength(12)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Friend)
+                    .HasMaxLength(12)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
