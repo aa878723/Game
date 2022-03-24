@@ -54,15 +54,25 @@ namespace Game.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Gender,Age,Birthday,Name,SexualOrientation,Career,Hobby,City,Account,Password,Role,LastLogin")] LoveGame loveGame)
+        public async Task<IActionResult> Create(
+            [Bind("Gender,Birthday,Name,SexualOrientation,Career,Hobby,City,Account,Password, ProfileImage")] 
+            CreateUserViewModel userModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(loveGame);
+                if (!await this.UploadFile(userModel.ProfileImage, userModel.Account))
+                {
+                    return RedirectToAction("Warning", "Home", new CommonWarningViewModel
+                    {
+                        Summary = "加入會員失敗",
+                        Message = "無法上傳照片，請重新嘗試"
+                    });
+                }
+                _context.Add(userModel.ConvertToLoveGameEntity("user"));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(loveGame);
+            return View(userModel);
         }
         public IActionResult Login()
         {
@@ -190,6 +200,24 @@ namespace Game.Controllers
         private bool LoveGameExists(int id)
         {
             return _context.LoveGames.Any(e => e.Id == id);
+        }
+
+        private async Task<bool> UploadFile(IFormFile ufile, string userAccount)
+        {
+            if (ufile != null && ufile.Length > 0)
+            {
+                var extension = Path.GetExtension(ufile.FileName);
+                if (extension != ".jpg")
+                    return false;
+
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", $"{userAccount}.jpg");
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ufile.CopyToAsync(fileStream);
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
