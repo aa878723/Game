@@ -1,0 +1,53 @@
+﻿@model OrderOptionViewModel
+
+<h1>儲值</h1>
+<br />
+
+<h3 class="text-secondary">親愛的 @Model.Account 乾爹您回來了</h3>
+<h5 class="text-secondary">您還有 @Model.TotalGameMoney Love 幣</h5>
+<br />
+
+<div class="d-flex justify-content-center">
+    @foreach (var item in Model.OrderOptions)
+    {
+        <div class="card w-75 m-1">
+            <div class="card-body">
+            <h5 class="card-title fw-bolder">@item.Title</h5>
+            <p class="card-text">@item.Description</p>
+            <p>
+                <span class="text-pink fw-bolder">Love 幣: </span>
+                <span class="text-secondary">@item.GameMoney</span>
+            </p>
+            <button class="btn btn-primary" onclick="purchase('@item.OrderType')">NTD @item.Price</button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function purchase(type) {
+            if (!type) {
+                alert("訂單不可為空");
+                return;
+            }
+
+            $.ajax({
+                url: `/Money/Purchase/`,
+                method: 'POST', // jQueyr 1.9 版以前只能用 type: 'GET'，1.9以後兩個都可以
+                data: {
+                    orderType: type,
+                },
+                success: function (resp) {
+                    console.log(resp)
+                    location.href = `/LoveGames/Details/${resp}`
+                },
+                error: function(err) {
+                    alert(JSON.stringify(err))
+                }
+            }).then(function () {
+                
+            });
+        }
+    </script>
+}

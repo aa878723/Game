@@ -91,7 +91,7 @@ namespace Game.Controllers
                 if (user.Role == "admin") // admin = 管理員
                     return RedirectToAction("Index");
                 else
-                    return RedirectToAction("Profile"); // 個人頁面
+                    return RedirectToAction("Details"); // 個人頁面
             }
             return View();
         }
@@ -123,7 +123,7 @@ namespace Game.Controllers
             _context.SaveChanges();
             HttpContext.Session.SetString("LoveGameAccount", loveGame.Account);
 
-            return RedirectToAction("TalkRoom", "Talk");
+            return RedirectToAction("Details", "LoveGames", new { id = user.Id});
         }
         // GET: LoveGames/Edit/5
         public async Task<IActionResult> Edit(int? id)
