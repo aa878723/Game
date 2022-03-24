@@ -40,7 +40,14 @@ namespace Game.Controllers
                 return NotFound();
             }
 
-            return View(loveGame);
+            decimal money = 0;
+            var moneyRecord = _context.Money.FirstOrDefault(x => x.Account == loveGame.Account);
+            if (moneyRecord != null)
+            {
+                money = moneyRecord.Qe;
+            }
+
+            return View(new UserProfileViewModel(loveGame, money));
         }
 
         // GET: LoveGames/Create
@@ -68,9 +75,10 @@ namespace Game.Controllers
                         Message = "無法上傳照片，請重新嘗試"
                     });
                 }
-                _context.Add(userModel.ConvertToLoveGameEntity("user"));
+                var newUser = userModel.ConvertToLoveGameEntity("user");
+                _context.Add(newUser);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = newUser.Id});
             }
             return View(userModel);
         }

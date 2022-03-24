@@ -54,14 +54,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                @Html.PasswordFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control"})
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="profileImage" class="control-label"></label>
+                <label for="profileImage" class="control-label">Profile Image</label>
                 <input type="file" accept="image/jpeg" name="ProfileImage" class="form-control" required/>
                 <span asp-validation-for="ProfileImage" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
