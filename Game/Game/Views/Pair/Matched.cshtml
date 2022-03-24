@@ -1,0 +1,27 @@
+﻿@model LoveGame
+
+<h1 class="text-center text-pink">配對成功！</h1>
+<br />
+
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="@Href($"~/images/{@Model.Account}.jpg")" alt="profile image">
+      <div class="card-body">
+        <h4 class="card-title">@Model.Account</h4>
+        <p class="card-text">@Model.Age 歲</p>
+        <p class="card-text">@Model.City</p>
+        <p class="card-text">@Model.Hobby</p>
+        <hr class="my-1">
+        <p>是否要立刻開始聊天?</p>
+        <div class="d-flex justify-content-between">
+            <input name="loverAccount" type="hidden" value="@Model.Account" readonly />
+            <a class="btn btn-pink" href="@Href($"/Talk/PersonalTalk?friendAccount={@Model.Account}")">馬上聊</a>
+            <a class="btn btn-light" href="@Href("/Pair/Pair")">等一下</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+<form>
+    <input id="lover" name="lover" type="hidden" value="@Model.Account" readonly />
+</form>

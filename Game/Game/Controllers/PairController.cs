@@ -25,9 +25,6 @@ namespace Game.Controllers
                 .Where(lover => lover.Account != userAccount && lover.Gender == user.SexualOrientation)
                 .ToList();
 
-            var aaa = new List<int>();
-            var bbb = aaa.Where(x => x > 0);
-
             // 取得 user 已經滑過的紀錄
             var existingPairs = _context.Pairs
                 .Where(x => x.Account == userAccount)
@@ -65,21 +62,22 @@ namespace Game.Controllers
         }
 
         [HttpPost]
-        public IActionResult Pair(string lover, bool want)
+        public IActionResult Pair(string loverAccount, string wantText)
         {
+            bool want = wantText == "喜歡";
             // 檢查登人狀態
             string? userAccount = HttpContext.Session.GetString("LoveGameAccount");
             if (string.IsNullOrEmpty(userAccount))
                 return RedirectToAction("Login", "LoveGames");
 
             var existingPair = _context.Pairs
-                .FirstOrDefault(x => x.Account == userAccount && x.Lover == lover);
+                .FirstOrDefault(x => x.Account == userAccount && x.Lover == loverAccount);
             if (existingPair == null)
             {
                 _context.Pairs.Add(new Pair
                 {
                     Account = userAccount,
-                    Lover = lover,
+                    Lover = loverAccount,
                     Want = want,
                 });
             }
@@ -89,8 +87,38 @@ namespace Game.Controllers
                 _context.Update(existingPair);
             }
 
+            // 檢查是否互相喜歡
+            if (want)
+            {
+                var loveBack = _context.Pairs.FirstOrDefault(x => 
+                    x.Account == loverAccount 
+                    && x.Lover == userAccount
+                    && x.Want == true);
+                if (loveBack != null)
+                {
+                    // 新增一筆紀錄到 TB_Friends
+                    var hasFriendRecord = _context.TbFriends.Any(x => 
+                        (x.Account == userAccount && x.Friend == loverAccount)
+                        || (x.Account == loverAccount && x.Friend == userAccount)
+                    );
+                    if (!hasFriendRecord)
+                    {
+                        _context.TbFriends.Add(new TbFriend
+                        {
+                            Account = userAccount,
+                            Friend = loverAccount
+                        });
+                        _context.SaveChanges();
+                    }
+
+                    // 回傳配對成功畫面
+                    var lover = _context.LoveGames.First(x => x.Account == loverAccount);
+                    return View("Matched", lover);
+                }
+            }
+
             _context.SaveChanges();
-            return Ok();
+            return RedirectToAction("Pair");
         }
     }
 }

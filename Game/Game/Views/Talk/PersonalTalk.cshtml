@@ -1,0 +1,146 @@
+﻿@model PersonalTalkingViewModel
+
+@{
+    ViewData["Title"] = $"私聊 - {Model.FriendAccount}";
+}
+
+<h1>私聊</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            @foreach (var personalTalk in Model.PersonalTalkingSelectList)
+            {
+                string cssClass = personalTalk.FriendAccount == Model.FriendAccount 
+                    ? "row border border-2 border-warning mb-2 rounded" : "row mb-2 rounded" ;
+                <div class="@cssClass">
+                    <div class="row" style="cursor: pointer" onclick="redirectToChat(this)">
+                        <div class="col-sm-4">
+                            <img style="max-width: 75px; max-height:75px" src="@Href($"~/images/{@personalTalk.FriendAccount}.jpg")">
+                        </div>
+                        <div class="col-sm-8 bg-light">
+                            <h4>@personalTalk.FriendAccount</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p>@personalTalk.LastMessage</p>
+                    </div>
+                </div>
+            }
+            @*<table class="table table-striped">
+                @foreach (var personalTalk in Model.PersonalTalkingSelectList)
+                {
+                    <tr id="tr-@personalTalk.FriendAccount">
+                        <td rowspan="2">
+                            <img style="max-width: 75px; max-height:75px" src="@Href($"~/images/{@personalTalk.FriendAccount}.jpg")">
+                        </td>
+                        <th style="cursor: pointer">
+                            <p>@personalTalk.FriendAccount</p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>@personalTalk.LastMessage</td>
+                    </tr>
+                }
+            </table>*@
+        </div>
+        <div class="col-sm-9">
+            @{
+                if (string.IsNullOrEmpty(Model.FriendAccount))
+                {
+                    <h3 class="text-secondary text-center">點選一位朋友開始聊天吧</h3>
+                }
+                else
+                {
+                    <h3 class="text-secondary text-center mb-3">與 @Model.FriendAccount 的聊天</h3>
+                    <div style="height: calc(100vh - 260px); overflow: scroll">
+                        @foreach (var message in Model.SelectedTalkingMessage)
+                        {
+                            string cssClass = message.Account == Model.UserAccount 
+                                ? "bg-info rounded text-end m-1" : "bg-light rounded text-start m-1" ;
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-sm-11">
+                                        <div class="@cssClass">
+                                            <span>@message.Message</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="fixed-bottom m-2">
+        <div class="row justify-content-center">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
+                @*<form asp-action="Talk">*@
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <input id="friendAccount" type="hidden" value="@Model.FriendAccount" readonly />
+                            <input id="message" type="text" class="form-control" />
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary" onclick="sendMessage()">發送</button>
+                        </div>
+                    </div>
+                @*</form>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const badWords = ["line", "賴", "私聊"];
+        function redirectToChat(element) {
+            if (!element){
+                return;
+            }
+
+            const friendAccount = element.querySelector("h4").textContent
+            location.href = `/Talk/PersonalTalk?friendAccount=${friendAccount}`
+        }
+
+        function sendMessage() {
+            const friend = $("#friendAccount").val();
+            const msg = $("#message").val();
+            if (!msg) {
+                alert('請輸入內容')
+                return;
+            }
+
+            if (containsBadWord(msg)) {
+                sendAnyway = confirm("你的訊息包含敏感字眼，是否仍要送出？");
+                if (!sendAnyway)
+                    return;
+            }
+
+            $.ajax({
+                url: window.location.pathname,
+                method: 'POST', // jQueyr 1.9 版以前只能用 type: 'GET'，1.9以後兩個都可以
+                data: {
+                    friendAccount: friend,
+                    message: msg,
+                },
+                success: function (resp) {
+                    // console.log(JSON.stringify(resp))
+                    location.reload()
+                },
+                error: function(err) {
+                    alert(JSON.stringify(err))
+                }
+            }).then(function () {
+                
+            });
+        }
+
+        function containsBadWord(msg) {
+            for (let i = 0; i < badWords.length; i++) {
+                if (msg.toLowerCase().includes(badWords[i]))
+                    return true;
+            }
+            return false;
+        }
+    </script>
+}

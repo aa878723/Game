@@ -11,38 +11,13 @@
         <p class="card-text">@Model.Age 歲</p>
         <p class="card-text">@Model.City</p>
         <p class="card-text">@Model.Hobby</p>
-        <div class="d-flex justify-content-between">
-            <button class="btn btn-pink" onclick="submitLover(true)">喜歡</button>
-            <button class="btn btn-light" onclick="submitLover(false)">不喜歡</button>
-        </div>
+        <form asp-action="Pair">
+            <div class="d-flex justify-content-between">
+                <input name="loverAccount" type="hidden" value="@Model.Account" readonly />
+                <input class="btn btn-pink" type="submit" name="wantText" value="喜歡" />
+                <input class="btn btn-light" type="submit" name="wantText" value="不喜歡" />
+            </div>
+        </form>
       </div>
     </div>
 </div>
-
-<form>
-    <input id="lover" name="lover" type="hidden" value="@Model.Account" readonly />
-</form>
-
-@section Scripts {
-    <script>
-        function submitLover(want) {
-            const lover = $("#lover").val();
-            $.ajax({
-                url: window.location.pathname,
-                method: 'POST', // jQueyr 1.9 版以前只能用 type: 'GET'，1.9以後兩個都可以
-                data: {
-                    lover: lover,
-                    want: want
-                },
-                success: function (resp) {
-                    location.reload()
-                },
-                error: function(err) {
-                    alert(JSON.stringify(err))
-                }
-            }).then(function () {
-                
-            });
-        }
-    </script>
-}
