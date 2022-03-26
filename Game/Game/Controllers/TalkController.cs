@@ -66,7 +66,9 @@ namespace Game.Controllers
                 return RedirectToAction("Login", "LoveGames");
 
             var persontalTalkSelectList = new List<PersonalTalkEntry>();
-            var friendRecords = _context.TbFriends.Where(x => x.Account == userAccount).ToList();
+            var friendRecords = _context.TbFriends
+                .Where(x => x.Account == userAccount || x.Friend == userAccount)
+                .ToList();
             foreach (var record in friendRecords)
             {
                 var lastTalking = _context.PersonalTalkings
@@ -89,7 +91,9 @@ namespace Game.Controllers
                 {
                     persontalTalkSelectList.Add(new PersonalTalkEntry
                     {
-                        FriendAccount = record.Friend,
+                        FriendAccount = record.Account == userAccount ?
+                        // 根據好友紀錄的 from.. to... 決定顯示誰的帳號
+                            record.Friend : record.Account, 
                         LastMessage = "[系統] 我們已經成為好友，快來聊天吧",
                         LastSendTime = new DateTime(2022, 1,1)
                     });
