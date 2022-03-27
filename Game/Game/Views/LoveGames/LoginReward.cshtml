@@ -1,0 +1,40 @@
+﻿@model Game.Models.LoginRewardViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>登入獎勵</h1>
+<hr />
+<div>
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="d-flex justify-content-center">
+                <img src="@Href($"~/images/{Model.Account}.jpg")" style="max-width: 300px"/>
+            </div>
+            <br />
+            <div class="text-center text-secondary">
+                @if (Model.TotalLoginDay == 1)
+                {
+                    <h4> 歡迎加入 Love Game</h4>
+                }
+                else
+                {
+                    <h4> 歡迎回來！</h4>
+                }
+                <h3>乾爹 @Model.Account</h3>
+            </div>
+        </div>
+        <div class="col-sm-7">
+                <h5 class="text-secondary">這是您第 @Model.TotalLoginDay 天登入</h5>
+                <h5 class="text-secondary">您已經連續登入 @Model.ContinuousLoginDay 天</h5>
+                <h5 class="text-secondary">獲得 Love 幣 @Model.RewardMoney</h5>
+                <h5 class="text-secondary">目前共有 @Model.TotalMoney Love 幣</h5>
+            <div class="d-flex justify-content-center">
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
