@@ -16,6 +16,7 @@ namespace Game.Models
         {
         }
 
+        public virtual DbSet<LoginReward> LoginRewards { get; set; } = null!;
         public virtual DbSet<LoveGame> LoveGames { get; set; } = null!;
         public virtual DbSet<Money> Money { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
@@ -36,6 +37,21 @@ namespace Game.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<LoginReward>(entity =>
+            {
+                entity.ToTable("LoginReward");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Account)
+                    .HasMaxLength(12)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RewardDate).HasColumnType("date");
+
+                entity.Property(e => e.RewardMoney).HasColumnType("decimal(18, 0)");
+            });
+
             modelBuilder.Entity<LoveGame>(entity =>
             {
                 entity.ToTable("LoveGame");
