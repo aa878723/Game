@@ -82,7 +82,7 @@ namespace Game.Controllers
             }
             return View(userModel);
         }
-        public IActionResult Login()
+        private IActionResult Login()
         {
             string accountCache = HttpContext.Session.GetString("LoveGameAccount");
             var user = _context.LoveGames.FirstOrDefault(x => x.Account == accountCache);
