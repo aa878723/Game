@@ -40,7 +40,7 @@ namespace Game.Controllers
                 return View(users);
             }
             else
-                return RedirectToAction("Details"); // 個人頁面
+                return RedirectToAction("Details", new { id = user.Id }); // 個人頁面
         }
 
         // GET: LoveGames/Details/5
