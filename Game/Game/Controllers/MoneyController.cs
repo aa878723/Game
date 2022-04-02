@@ -9,7 +9,7 @@ namespace Game.Controllers
         private static List<OrderOptionItem> orderList = new List<OrderOptionItem>
         {
             new OrderOptionItem { OrderType = "NT99", GameMoney = 300, Price = 99, Title = "超值特惠包", Description = "試水溫神器，不到一百塊就能體驗 Love Game 交友特權" },
-            new OrderOptionItem { OrderType = "NT299", GameMoney = 1000, Price = 299, Title = "小資單身包", Description = "告別單身生活，一個月少喝 10 杯飲料，能瘦身又能脫離單身"},
+            new OrderOptionItem { OrderType = "NT299", GameMoney = 1000, Price = 299, Title = "小資脫單包", Description = "告別單身生活，一個月少喝 10 杯飲料，能瘦身又能脫離單身"},
             new OrderOptionItem { OrderType = "NT3000", GameMoney = 12000, Price = 3000, Title = "霸道總裁包", Description = "霸道總裁專屬方案，價格只是個數字，總裁要的是尊爵不凡的服務"},
             new OrderOptionItem { OrderType = "NT8000", GameMoney = 30000, Price = 8000, Title = "御用皇帝包", Description = "皇帝祖宗專屬方案，價格是什麼東西，朕要的是瘋狂的撒幣"},
         };
