@@ -20,9 +20,24 @@ namespace Game.Controllers
         }
 
         // GET: LoveGames
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.LoveGames.ToListAsync());
+            string accountCache = HttpContext.Session.GetString("LoveGameAccount");
+            var user = _context.LoveGames.FirstOrDefault(x => x.Account == accountCache);
+
+            // 符合以下其中一個條件就重新登入
+            if (user == null // session 快取找不到使用者
+                || user.LastLogin.Date != DateTime.Now.Date // 跨日 
+                || user.LastLogin.AddHours(2) < DateTime.Now) // 最後一次登入超過兩小時
+            {
+                return View();
+            }
+
+            // 有快取，不用登入
+            if (user.Role == "admin") // admin = 管理員
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Details"); // 個人頁面
         }
 
         // GET: LoveGames/Details/5
