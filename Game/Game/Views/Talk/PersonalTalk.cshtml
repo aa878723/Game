@@ -89,6 +89,10 @@
         function sendMessage() {
             const friend = $("#friendAccount").val();
             const msg = $("#message").val();
+            if (!friend) {
+                alert('請先選擇好友')
+                return;
+            }
             if (!msg) {
                 alert('請輸入內容')
                 return;
