@@ -82,7 +82,7 @@ namespace Game.Controllers
             }
             return View(userModel);
         }
-        private IActionResult Login()
+        public IActionResult Login()
         {
             string accountCache = HttpContext.Session.GetString("LoveGameAccount");
             var user = _context.LoveGames.FirstOrDefault(x => x.Account == accountCache);
@@ -123,6 +123,7 @@ namespace Game.Controllers
                     Summary = "登入失敗",
                     Message = "帳號或密碼錯誤"
                 });
+            
 
             user.LastLogin = DateTime.Now;
             _context.LoveGames.Update(user);
