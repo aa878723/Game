@@ -34,8 +34,11 @@ namespace Game.Controllers
             }
 
             // 有快取，不用登入
-            if (user.Role == "admin") // admin = 管理員
-                return RedirectToAction("Index");
+            if (user.Role == "admin")
+            {
+                var users = _context.LoveGames.ToList();
+                return View(users);
+            }
             else
                 return RedirectToAction("Details"); // 個人頁面
         }
@@ -114,7 +117,7 @@ namespace Game.Controllers
             if (user.Role == "admin") // admin = 管理員
                 return RedirectToAction("Index");
             else
-                return RedirectToAction("Details"); // 個人頁面
+                return RedirectToAction("Details", new {id = user.Id}); // 個人頁面
         }
 
         // POST: LoveGames/Create
