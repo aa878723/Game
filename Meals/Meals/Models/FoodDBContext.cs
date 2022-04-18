@@ -35,6 +35,10 @@ namespace Meals.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.MealStyle)
+                    .HasMaxLength(2)
+                    .IsFixedLength();
+
                 entity.Property(e => e.Name).HasMaxLength(10);
             });
 

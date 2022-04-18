@@ -18,7 +18,7 @@ namespace Meals.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("Name,Price")]
+        public IActionResult Create([Bind("Name,Price,MealStyle")]
             EasyFood foodModel)
         {
             _context.EasyFoods.Add(foodModel);
